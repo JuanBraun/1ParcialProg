@@ -3,11 +3,11 @@ import { CafeService } from '../services/cafeServices';
 
 export class CafeController {
 
-  // GET /productos
+
     public getProductos(req: Request, res: Response): void {
         const lista = CafeService.obtenerProductos();
     
-    // Mapeamos para mostrar también el precio calculado si se desea
+
         const resultado = lista.map((p: any) => ({
             id: p.id,
             nombre: p.nombre,
@@ -18,7 +18,7 @@ export class CafeController {
     res.json(resultado);
     }
 
-  // GET /productos/:id
+
     public getProductoPorId(req: Request, res: Response): any {
         const producto = CafeService.obtenerProductoPorId(req.params.id as string);
             if (!producto) {
@@ -31,7 +31,7 @@ export class CafeController {
         });
     }
 
-  // POST /pedidos
+
     public crearPedido(req: Request, res: Response): any {
         const { items } = req.body; // Espera un array de { productoId, cantidad }
         if (!items || !Array.isArray(items)) {
