@@ -3,13 +3,15 @@ import { Expreso } from '../modelos/expreso';
 import { Filtrado } from '../modelos/filtrado';
 import { Pasteleria } from '../modelos/pasteleria';
 import { Pedido, ItemPedido } from '../modelos/pedido';
+import { Te } from '../modelos/te'
 
 let productos: Producto[] = [
     new Expreso('1', 'Café Expreso Brasil', 2500, 'Mediano', 27, 'Brasil', 140),
     new Expreso('2', 'Café Expreso Colombia', 2500, 'Mediano', 27, 'Colombia', 180),
     new Filtrado('3', 'Café Filtrado Etiopía', 3200, 'Taza grande', 25, 'Etiopía', 240),
     new Pasteleria('4', 'Muffin de chocolate', 2500),
-    new Pasteleria('5', 'Torta selva negra', 4200)
+    new Pasteleria('5', 'Torta selva negra', 4200),
+    new Te('6', 'Té en hebras rojo', 1500)
 ];
 
 let pedidos: Pedido[] = [];
@@ -33,7 +35,7 @@ export const CafeService = {
     obtenerProductoPorId: (id: string) => productos.find(p => p.id === id),
 
     crearPedido: (items: ItemPedido[]) => {
-        const nuevoId = (pedidos.length + 1).toString();
+        const nuevoId = crypto.randomUUID(); //refactoring
         const pedido = new Pedido(nuevoId, items, 'pendiente');
         pedidos.push(pedido);
         return pedido;
