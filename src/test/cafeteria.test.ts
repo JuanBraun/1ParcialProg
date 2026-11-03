@@ -3,6 +3,7 @@ import { Expreso } from '../modelos/expreso';
 import { Filtrado } from '../modelos/filtrado';
 import { Pasteleria } from '../modelos/pasteleria';
 import { CafeService } from '../services/cafeServices';
+import { Te } from "../modelos/te";
 
 describe('Cafetería Origen - Pruebas Unitarias y de Negocio', () => {
     it('Debe calcular correctamente el precio de un Expreso', () => {
@@ -38,5 +39,11 @@ describe('Cafetería Origen - Pruebas Unitarias y de Negocio', () => {
 
     const masVendido = CafeService.obtenerProductoMasVendido();
     expect(masVendido.cantidad).toBe(2);
+    });
+
+    it('Debe calcular correctamente el precio de un Té en hebras', () => {
+    // El Té tiene un precio base de $1500 y no tiene costo extra por preparación
+        const te = new Te('6', 'Té en hebras rojo', 1500);
+        expect(te.calcularPrecio()).toBe(1500);
     });
 });
