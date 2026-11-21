@@ -19,14 +19,17 @@ let pedidos: Pedido[] = [];
 const calcularVentasPorProducto = () => {
     const ventas: { [nombreProducto: string]: number } = {};
 
-    pedidos.forEach(pedido => {
-        pedido.items.forEach(item => {
-            const producto = productos.find(p => p.id === item.productoId);
-            if (producto) {
-                ventas[producto.nombre] = (ventas[producto.nombre] || 0) + item.cantidad;
-            }
+    pedidos
+        .filter(pedido => pedido.estado !== 'cancelado')
+        .forEach(pedido => {
+            pedido.items.forEach(item => {
+                const producto = productos.find(p => p.id === item.productoId);
+                if (producto) {
+                    ventas[producto.nombre] = (ventas[producto.nombre] || 0) + item.cantidad;
+                }
+            });
         });
-    });
+
     return ventas;
 };
 
@@ -69,7 +72,9 @@ export const CafeService = {
     },
 
     obtenerFacturacionTotal: (): number => {
-        return pedidos.reduce((total, pedido) => {
+    return pedidos
+        .filter(pedido => pedido.estado !== 'cancelado')
+        .reduce((total, pedido) => {
             return total + CafeService.calcularTotalPedido(pedido);
         }, 0);
     },

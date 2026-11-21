@@ -1,3 +1,4 @@
+
 import { describe, it, expect } from 'vitest';
 import { Expreso } from '../modelos/expreso';
 import { Filtrado } from '../modelos/filtrado';
@@ -49,8 +50,6 @@ describe('Cafetería Origen - Pruebas Unitarias y de Negocio', () => {
     });
 
     it('Debe registrar un pedido y calcular correctamente el total y reportes', () => {
-        // Creamos un pedido con 2 unidades del producto ID '1'
-        // Expreso Colombia: $7360 c/u
         const pedido = CafeService.crearPedido([
             { productoId: '1', cantidad: 2 }
         ]);
@@ -66,7 +65,6 @@ describe('Cafetería Origen - Pruebas Unitarias y de Negocio', () => {
     });
 
     it('Debe calcular correctamente el precio de un Té en hebras', () => {
-        // El Té tiene un precio base de $1500 y no tiene costo extra por preparación
         const te = new Te(
             '6',
             'Té en hebras rojo',
@@ -84,5 +82,21 @@ describe('Cafetería Origen - Pruebas Unitarias y de Negocio', () => {
         const pedidoCancelado = CafeService.cancelarPedido(pedido.id);
 
         expect(pedidoCancelado.estado).toBe('cancelado');
+    });
+
+    it('No debe contar los pedidos cancelados en la facturación ni en las ventas', () => {
+        const facturacionAntes = CafeService.obtenerFacturacionTotal();
+        const ventasAntes = { ...CafeService.obtenerCantidadVendidaPorProducto() };
+        const masVendidoAntes = CafeService.obtenerProductoMasVendido();
+
+        const pedido = CafeService.crearPedido([
+            { productoId: '1', cantidad: 1 }
+        ]);
+
+        CafeService.cancelarPedido(pedido.id);
+
+        expect(CafeService.obtenerFacturacionTotal()).toBe(facturacionAntes);
+        expect(CafeService.obtenerCantidadVendidaPorProducto()).toEqual(ventasAntes);
+        expect(CafeService.obtenerProductoMasVendido()).toEqual(masVendidoAntes);
     });
 });
