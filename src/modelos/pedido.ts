@@ -3,10 +3,12 @@ export interface ItemPedido {
     cantidad: number;
 }
 
+export type EstadoPedido = 'pendiente' | 'entregado' | 'cancelado';
+
 export class Pedido {
     constructor(
         public id: string,
         public items: ItemPedido[],
-        public estado: 'pendiente' | 'entregado' = 'pendiente'
+        public estado: EstadoPedido = 'pendiente'
     ) {}
 }

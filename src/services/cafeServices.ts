@@ -45,6 +45,21 @@ export const CafeService = {
 
     obtenerPedidoPorId: (id: string) => pedidos.find(p => p.id === id),
 
+    cancelarPedido: (id: string): Pedido => {
+       const pedido = pedidos.find(p => p.id === id);
+
+        if (!pedido) {
+          throw new Error('Pedido no encontrado');
+      }
+
+        if (pedido.estado !== 'pendiente') {
+          throw new Error('Solo se pueden cancelar pedidos pendientes');
+      }
+
+        pedido.estado = 'cancelado';
+        return pedido;
+    },
+
     calcularTotalPedido: (pedido: Pedido): number => {
         return pedido.items.reduce((acumulado, item) => {
             const producto = productos.find(p => p.id === item.productoId);
