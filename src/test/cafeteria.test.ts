@@ -99,4 +99,20 @@ describe('Cafetería Origen - Pruebas Unitarias y de Negocio', () => {
         expect(CafeService.obtenerCantidadVendidaPorProducto()).toEqual(ventasAntes);
         expect(CafeService.obtenerProductoMasVendido()).toEqual(masVendidoAntes);
     });
+
+    it('Debe lanzar un error al intentar cancelar un pedido inexistente', () => {
+        expect(() => CafeService.cancelarPedido('pedido-inexistente'))
+            .toThrow('Pedido no encontrado');
+    });
+
+    it('Debe lanzar un error al intentar cancelar un pedido que no está pendiente', () => {
+        const pedido = CafeService.crearPedido([
+            { productoId: '1', cantidad: 1 }
+        ]);
+
+        CafeService.cancelarPedido(pedido.id);
+
+        expect(() => CafeService.cancelarPedido(pedido.id))
+            .toThrow('Solo se pueden cancelar pedidos pendientes');
+    });
 });

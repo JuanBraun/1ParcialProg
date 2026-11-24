@@ -12,6 +12,7 @@ router.get('/productos/:id', (req, res) => cafeController.getProductoPorId(req, 
 router.post('/pedidos', (req, res) => cafeController.crearPedido(req, res));
 router.get('/pedidos', (req, res) => cafeController.getPedidos(req, res));
 router.get('/pedidos/:id', (req, res) => cafeController.getPedidoPorId(req, res));
+router.post('/pedidos/:id/cancelar', (req, res) => cafeController.cancelarPedido(req, res));
 
 // Rutas de Reportes
 router.get('/reportes/facturacion', (req, res) => cafeController.getFacturacionTotal(req, res));

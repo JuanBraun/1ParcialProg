@@ -108,6 +108,34 @@ export class CafeController {
     }
   }
 
+  // POST /api/pedidos/:id/cancelar -> Cancelar un pedido pendiente
+  public cancelarPedido(req: Request, res: Response): void {
+    try {
+      const id = req.params.id;
+
+      const pedidoCancelado = CafeService.cancelarPedido(id);
+
+      res.json({
+        id: pedidoCancelado.id,
+        items: pedidoCancelado.items,
+        estado: pedidoCancelado.estado,
+        totalPedido: CafeService.calcularTotalPedido(pedidoCancelado)
+      });
+    } catch (error: any) {
+      if (error.message === 'Pedido no encontrado') {
+        res.status(404).json({ error: error.message });
+        return;
+      }
+
+    if (error.message === 'Solo se pueden cancelar pedidos pendientes') {
+      res.status(400).json({ error: error.message });
+      return;
+    }
+
+    res.status(500).json({ error: 'Error al cancelar el pedido' });
+  }
+}
+
   // GET /api/reportes/facturacion -> Total facturado en la cafetería
   public getFacturacionTotal(req: Request, res: Response): void {
     try {
